@@ -1,5 +1,7 @@
-
 import re
+from database import initialize_db, save_student
+db_conn = initialize_db()
+
 
 def get_name(prompt):
     while True:
@@ -70,6 +72,11 @@ We remain, with a hopeful eye toward your future growth,
 
 The Board of Admissions
  """
+    
+if __name__ == "__main__":
+    # Initialize the database
+    db_conn = initialize_db()
+
 
 # Input
 name = get_name("Enter Your Name: ")
@@ -79,7 +86,14 @@ Extracurricular_score = get_valid_input("Enter Extracurricular Score: ", 0, 10)
 
 # Process
 status = evaluate(Marks, Entrance_exam_score, Extracurricular_score)
+
+save_student(db_conn, name, Marks, Entrance_exam_score, status)
+
+
 message = generate_message(name, status)
 
 # Output
 print("\n" + message)
+
+db_conn.close()
+
